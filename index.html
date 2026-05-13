@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[ CYBER HUB ] - Hacker Terminal Interface</title>
+    <title>CYBER HUB - Ultimate Interactive Platform</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,41 +12,31 @@
     <div class="content-wrapper">
         <header>
             <div class="glitch-wrapper">
-                <h1 data-text="[ CYBER HUB ]">[ CYBER HUB ]</h1>
+                <h1>CYBER HUB</h1>
             </div>
-            <p>⚡ HACKER TERMINAL INTERFACE v2.0 ⚡</p>
-            <div class="terminal-line">SYSTEM ONLINE | ACCESS GRANTED | ALL SYSTEMS OPERATIONAL</div>
+            <p>⚡ Ultimate Interactive Platform with RGB Effects ⚡</p>
         </header>
 
         <nav class="tabs">
-            <button class="tab-btn active" data-tab="todo">
-                <span>[ TODO ]</span>
-            </button>
-            <button class="tab-btn" data-tab="calculator">
-                <span>[ CALC ]</span>
-            </button>
-            <button class="tab-btn" data-tab="timer">
-                <span>[ TIMER ]</span>
-            </button>
-            <button class="tab-btn" data-tab="notes">
-                <span>[ NOTES ]</span>
-            </button>
-            <button class="tab-btn" data-tab="draw">
-                <span>[ DRAW ]</span>
-            </button>
-            <button class="tab-btn" data-tab="weather">
-                <span>[ WEATHER ]</span>
-            </button>
+            <button class="tab-btn active" data-tab="todo">TODO</button>
+            <button class="tab-btn" data-tab="calculator">CALC</button>
+            <button class="tab-btn" data-tab="timer">TIMER</button>
+            <button class="tab-btn" data-tab="notes">NOTES</button>
+            <button class="tab-btn" data-tab="draw">DRAW</button>
+            <button class="tab-btn" data-tab="weather">WEATHER</button>
+            <button class="tab-btn" data-tab="password">PASSWORD</button>
+            <button class="tab-btn" data-tab="converter">CONVERTER</button>
+            <button class="tab-btn" data-tab="game">GAME</button>
         </nav>
 
         <main>
             <!-- Todo List -->
             <section id="todo" class="tab-content active">
-                <h2>TASK MANAGER</h2>
+                <h2>Task Manager</h2>
                 <div class="todo-container">
                     <div class="input-group">
-                        <input type="text" id="todo-input" placeholder=">> ENTER NEW TASK...">
-                        <button id="add-todo">[+] ADD</button>
+                        <input type="text" id="todo-input" placeholder="Enter new task...">
+                        <button id="add-todo">ADD TASK</button>
                     </div>
                     <ul id="todo-list"></ul>
                 </div>
@@ -54,7 +44,7 @@
 
             <!-- Calculator -->
             <section id="calculator" class="tab-content">
-                <h2>CALCULATOR</h2>
+                <h2>Calculator</h2>
                 <div class="calculator">
                     <div class="calc-display" id="calc-display">0</div>
                     <div class="calc-buttons">
@@ -78,36 +68,36 @@
                         <button class="calc-btn operator" data-value="=">=</button>
                         <button class="calc-btn operator" data-value="+">+</button>
 
-                        <button class="calc-btn clear" data-value="C">[CLEAR]</button>
+                        <button class="calc-btn clear" data-value="C">CLEAR</button>
                     </div>
                 </div>
             </section>
 
             <!-- Timer -->
             <section id="timer" class="tab-content">
-                <h2>COUNTDOWN TIMER</h2>
+                <h2>Countdown Timer</h2>
                 <div class="timer-container">
                     <div class="timer-display" id="timer-display">00:00</div>
                     <div class="timer-controls">
-                        <input type="number" id="timer-minutes" placeholder="MIN" min="0" max="99">
-                        <input type="number" id="timer-seconds" placeholder="SEC" min="0" max="59">
+                        <input type="number" id="timer-minutes" placeholder="Minutes" min="0" max="99">
+                        <input type="number" id="timer-seconds" placeholder="Seconds" min="0" max="59">
                     </div>
                     <div class="timer-buttons">
-                        <button id="timer-start">[START]</button>
-                        <button id="timer-pause">[PAUSE]</button>
-                        <button id="timer-reset">[RESET]</button>
+                        <button id="timer-start">START</button>
+                        <button id="timer-pause">PAUSE</button>
+                        <button id="timer-reset">RESET</button>
                     </div>
                 </div>
             </section>
 
             <!-- Notes -->
             <section id="notes" class="tab-content">
-                <h2>SECURE NOTES</h2>
+                <h2>Notes</h2>
                 <div class="notes-container">
-                    <textarea id="notes-area" placeholder=">> ENTER ENCRYPTED MESSAGE..."></textarea>
+                    <textarea id="notes-area" placeholder="Write your notes here..."></textarea>
                     <div class="notes-buttons">
-                        <button id="save-note">[SAVE]</button>
-                        <button id="clear-note">[CLEAR]</button>
+                        <button id="save-note">SAVE NOTE</button>
+                        <button id="clear-note">CLEAR</button>
                     </div>
                     <div id="saved-notes"></div>
                 </div>
@@ -115,33 +105,119 @@
 
             <!-- Drawing Canvas -->
             <section id="draw" class="tab-content">
-                <h2>DIGITAL CANVAS</h2>
+                <h2>Digital Canvas</h2>
                 <div class="draw-container">
                     <div class="draw-controls">
-                        <input type="color" id="color-picker" value="#00ff41">
-                        <input type="range" id="brush-size" min="1" max="30" value="5">
-                        <button id="clear-canvas">[CLEAR]</button>
-                        <button id="save-canvas">[SAVE]</button>
+                        <input type="color" id="color-picker" value="#ff0000">
+                        <input type="range" id="brush-size" min="1" max="50" value="5">
+                        <button id="clear-canvas">CLEAR</button>
+                        <button id="save-canvas">SAVE</button>
+                        <button id="rainbow-mode">RAINBOW MODE</button>
                     </div>
-                    <canvas id="draw-canvas" width="800" height="500"></canvas>
+                    <canvas id="draw-canvas" width="900" height="600"></canvas>
                 </div>
             </section>
 
             <!-- Weather -->
             <section id="weather" class="tab-content">
-                <h2>WEATHER SCAN</h2>
+                <h2>Weather Scanner</h2>
                 <div class="weather-container">
                     <div class="input-group">
-                        <input type="text" id="city-input" placeholder=">> ENTER LOCATION...">
-                        <button id="get-weather">[SCAN]</button>
+                        <input type="text" id="city-input" placeholder="Enter city name...">
+                        <button id="get-weather">SCAN WEATHER</button>
                     </div>
                     <div id="weather-display"></div>
+                </div>
+            </section>
+
+            <!-- Password Generator -->
+            <section id="password" class="tab-content">
+                <h2>Password Generator</h2>
+                <div class="password-container">
+                    <div class="password-display" id="password-display">Click Generate</div>
+                    <div class="password-controls">
+                        <label>
+                            Length: <span id="length-value">16</span>
+                            <input type="range" id="password-length" min="8" max="32" value="16">
+                        </label>
+                        <label>
+                            <input type="checkbox" id="include-uppercase" checked> Uppercase
+                        </label>
+                        <label>
+                            <input type="checkbox" id="include-lowercase" checked> Lowercase
+                        </label>
+                        <label>
+                            <input type="checkbox" id="include-numbers" checked> Numbers
+                        </label>
+                        <label>
+                            <input type="checkbox" id="include-symbols" checked> Symbols
+                        </label>
+                    </div>
+                    <div class="password-buttons">
+                        <button id="generate-password">GENERATE</button>
+                        <button id="copy-password">COPY</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Currency Converter -->
+            <section id="converter" class="tab-content">
+                <h2>Currency Converter</h2>
+                <div class="converter-container">
+                    <div class="converter-input">
+                        <input type="number" id="amount" placeholder="Amount" value="1">
+                        <select id="from-currency">
+                            <option value="USD">USD - US Dollar</option>
+                            <option value="EUR">EUR - Euro</option>
+                            <option value="GBP">GBP - British Pound</option>
+                            <option value="JPY">JPY - Japanese Yen</option>
+                            <option value="RUB">RUB - Russian Ruble</option>
+                            <option value="CNY">CNY - Chinese Yuan</option>
+                            <option value="INR">INR - Indian Rupee</option>
+                            <option value="BTC">BTC - Bitcoin</option>
+                        </select>
+                    </div>
+                    <div class="converter-arrow">⇄</div>
+                    <div class="converter-input">
+                        <input type="number" id="result" placeholder="Result" readonly>
+                        <select id="to-currency">
+                            <option value="EUR">EUR - Euro</option>
+                            <option value="USD">USD - US Dollar</option>
+                            <option value="GBP">GBP - British Pound</option>
+                            <option value="JPY">JPY - Japanese Yen</option>
+                            <option value="RUB">RUB - Russian Ruble</option>
+                            <option value="CNY">CNY - Chinese Yuan</option>
+                            <option value="INR">INR - Indian Rupee</option>
+                            <option value="BTC">BTC - Bitcoin</option>
+                        </select>
+                    </div>
+                    <button id="convert-btn">CONVERT</button>
+                    <div id="conversion-rate"></div>
+                </div>
+            </section>
+
+            <!-- Game -->
+            <section id="game" class="tab-content">
+                <h2>Snake Game</h2>
+                <div class="game-container">
+                    <div class="game-info">
+                        <div class="score">Score: <span id="score">0</span></div>
+                        <div class="high-score">High Score: <span id="high-score">0</span></div>
+                    </div>
+                    <canvas id="game-canvas" width="400" height="400"></canvas>
+                    <div class="game-controls">
+                        <button id="start-game">START GAME</button>
+                        <button id="pause-game">PAUSE</button>
+                    </div>
+                    <div class="game-instructions">
+                        Use Arrow Keys or WASD to control the snake
+                    </div>
                 </div>
             </section>
         </main>
 
         <footer>
-            <p>[ CYBER HUB v2.0 ] | SYSTEM STATUS: ONLINE | © 2026 | ALL RIGHTS RESERVED</p>
+            <p>CYBER HUB v3.0 | © 2026 | Powered by RGB Technology</p>
         </footer>
     </div>
 
