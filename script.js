@@ -1,125 +1,43 @@
-// Particles System
-const particlesCanvas = document.getElementById('particles-canvas');
-const particlesCtx = particlesCanvas.getContext('2d');
+// Matrix Rain Effect
+const matrixCanvas = document.getElementById('matrix-canvas');
+const matrixCtx = matrixCanvas.getContext('2d');
 
-particlesCanvas.width = window.innerWidth;
-particlesCanvas.height = window.innerHeight;
+matrixCanvas.width = window.innerWidth;
+matrixCanvas.height = window.innerHeight;
 
-let particlesArray = [];
-let mouse = {
-    x: null,
-    y: null,
-    radius: 150
-};
+const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?/~`';
+const fontSize = 16;
+const columns = matrixCanvas.width / fontSize;
+const drops = [];
 
-window.addEventListener('mousemove', (e) => {
-    mouse.x = e.x;
-    mouse.y = e.y;
-});
+for (let i = 0; i < columns; i++) {
+    drops[i] = Math.random() * -100;
+}
+
+function drawMatrix() {
+    matrixCtx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+    matrixCtx.fillStyle = '#00ff41';
+    matrixCtx.font = fontSize + 'px monospace';
+
+    for (let i = 0; i < drops.length; i++) {
+        const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+        matrixCtx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+        drops[i]++;
+    }
+}
+
+setInterval(drawMatrix, 50);
 
 window.addEventListener('resize', () => {
-    particlesCanvas.width = window.innerWidth;
-    particlesCanvas.height = window.innerHeight;
-    init();
+    matrixCanvas.width = window.innerWidth;
+    matrixCanvas.height = window.innerHeight;
 });
-
-class Particle {
-    constructor(x, y, directionX, directionY, size, color) {
-        this.x = x;
-        this.y = y;
-        this.directionX = directionX;
-        this.directionY = directionY;
-        this.size = size;
-        this.color = color;
-    }
-
-    draw() {
-        particlesCtx.beginPath();
-        particlesCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        particlesCtx.fillStyle = this.color;
-        particlesCtx.fill();
-    }
-
-    update() {
-        if (this.x > particlesCanvas.width || this.x < 0) {
-            this.directionX = -this.directionX;
-        }
-        if (this.y > particlesCanvas.height || this.y < 0) {
-            this.directionY = -this.directionY;
-        }
-
-        let dx = mouse.x - this.x;
-        let dy = mouse.y - this.y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < mouse.radius + this.size) {
-            if (mouse.x < this.x && this.x < particlesCanvas.width - this.size * 10) {
-                this.x += 5;
-            }
-            if (mouse.x > this.x && this.x > this.size * 10) {
-                this.x -= 5;
-            }
-            if (mouse.y < this.y && this.y < particlesCanvas.height - this.size * 10) {
-                this.y += 5;
-            }
-            if (mouse.y > this.y && this.y > this.size * 10) {
-                this.y -= 5;
-            }
-        }
-
-        this.x += this.directionX;
-        this.y += this.directionY;
-        this.draw();
-    }
-}
-
-function init() {
-    particlesArray = [];
-    let numberOfParticles = (particlesCanvas.width * particlesCanvas.height) / 9000;
-
-    for (let i = 0; i < numberOfParticles; i++) {
-        let size = (Math.random() * 3) + 1;
-        let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-        let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-        let directionX = (Math.random() * 0.4) - 0.2;
-        let directionY = (Math.random() * 0.4) - 0.2;
-        let color = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2})`;
-
-        particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
-    }
-}
-
-function connect() {
-    for (let a = 0; a < particlesArray.length; a++) {
-        for (let b = a; b < particlesArray.length; b++) {
-            let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
-                + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-
-            if (distance < (particlesCanvas.width / 7) * (particlesCanvas.height / 7)) {
-                let opacity = 1 - (distance / 20000);
-                particlesCtx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.3})`;
-                particlesCtx.lineWidth = 1;
-                particlesCtx.beginPath();
-                particlesCtx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                particlesCtx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                particlesCtx.stroke();
-            }
-        }
-    }
-}
-
-function animateParticles() {
-    requestAnimationFrame(animateParticles);
-    particlesCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
-
-    for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update();
-    }
-    connect();
-}
-
-init();
-animateParticles();
 
 // Tab Navigation
 const tabBtns = document.querySelectorAll('.tab-btn');
@@ -134,6 +52,13 @@ tabBtns.forEach(btn => {
 
         btn.classList.add('active');
         document.getElementById(tabId).classList.add('active');
+
+        // Terminal boot sound effect (visual)
+        const content = document.getElementById(tabId);
+        content.style.animation = 'none';
+        setTimeout(() => {
+            content.style.animation = 'terminalBoot 0.5s ease';
+        }, 10);
     });
 });
 
@@ -152,9 +77,9 @@ function renderTodos() {
         li.innerHTML = `
             <input type="checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo(${index})">
             <span>${todo.text}</span>
-            <button onclick="deleteTodo(${index})">🗑️ Удалить</button>
+            <button onclick="deleteTodo(${index})">[DELETE]</button>
         `;
-        li.style.animation = 'slideIn 0.3s ease';
+        li.style.animation = 'slideInLeft 0.3s ease';
         todoList.appendChild(li);
     });
 }
@@ -279,12 +204,11 @@ function startTimer() {
                     isRunning = false;
 
                     if ('Notification' in window && Notification.permission === 'granted') {
-                        new Notification('⏰ Таймер', {
-                            body: 'Время вышло!',
-                            icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%236366f1"/></svg>'
+                        new Notification('⚡ CYBER HUB ALERT', {
+                            body: 'COUNTDOWN COMPLETE!',
                         });
                     }
-                    alert('⏰ Время вышло!');
+                    alert('⚡ COUNTDOWN COMPLETE!');
                 }
             }, 1000);
         }
@@ -328,11 +252,11 @@ function renderNotes() {
     notes.forEach((note, index) => {
         const noteCard = document.createElement('div');
         noteCard.className = 'note-card';
-        noteCard.style.animation = 'slideIn 0.3s ease';
+        noteCard.style.animation = 'slideInLeft 0.3s ease';
         noteCard.innerHTML = `
-            <div class="note-date">📅 ${note.date}</div>
+            <div class="note-date">> ${note.date}</div>
             <div class="note-content">${note.content}</div>
-            <button onclick="deleteNote(${index})">🗑️ Удалить</button>
+            <button onclick="deleteNote(${index})">[DELETE]</button>
         `;
         savedNotesDiv.appendChild(noteCard);
     });
@@ -379,6 +303,10 @@ let lastY = 0;
 ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
 
+// Add glow effect to drawing
+ctx.shadowBlur = 10;
+ctx.shadowColor = '#00ff41';
+
 canvas.addEventListener('mousedown', (e) => {
     isDrawing = true;
     [lastX, lastY] = [e.offsetX, e.offsetY];
@@ -389,6 +317,7 @@ canvas.addEventListener('mousemove', (e) => {
 
     ctx.strokeStyle = colorPicker.value;
     ctx.lineWidth = brushSize.value;
+    ctx.shadowColor = colorPicker.value;
 
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
@@ -418,6 +347,7 @@ canvas.addEventListener('touchmove', (e) => {
 
     ctx.strokeStyle = colorPicker.value;
     ctx.lineWidth = brushSize.value;
+    ctx.shadowColor = colorPicker.value;
 
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
@@ -435,7 +365,7 @@ clearCanvasBtn.addEventListener('click', () => {
 
 saveCanvasBtn.addEventListener('click', () => {
     const link = document.createElement('a');
-    link.download = `drawing-${Date.now()}.png`;
+    link.download = `cyber-drawing-${Date.now()}.png`;
     link.href = canvas.toDataURL();
     link.click();
 });
@@ -449,7 +379,7 @@ async function getWeather() {
     const city = cityInput.value.trim();
     if (!city) return;
 
-    weatherDisplay.innerHTML = '<p>🔄 Загрузка...</p>';
+    weatherDisplay.innerHTML = '<p>> SCANNING LOCATION...</p>';
 
     try {
         const response = await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=j1`);
@@ -460,27 +390,27 @@ async function getWeather() {
 
         weatherDisplay.innerHTML = `
             <div class="weather-info">
-                <h3>📍 ${location.areaName[0].value}, ${location.country[0].value}</h3>
+                <h3>> LOCATION: ${location.areaName[0].value}, ${location.country[0].value}</h3>
                 <div class="weather-temp">${current.temp_C}°C</div>
                 <div class="weather-desc">${current.weatherDesc[0].value}</div>
                 <div class="weather-details">
                     <div class="weather-detail">
-                        <strong>🌡️ Ощущается как:</strong><br>${current.FeelsLikeC}°C
+                        <strong>FEELS LIKE:</strong><br>${current.FeelsLikeC}°C
                     </div>
                     <div class="weather-detail">
-                        <strong>💧 Влажность:</strong><br>${current.humidity}%
+                        <strong>HUMIDITY:</strong><br>${current.humidity}%
                     </div>
                     <div class="weather-detail">
-                        <strong>💨 Ветер:</strong><br>${current.windspeedKmph} км/ч
+                        <strong>WIND SPEED:</strong><br>${current.windspeedKmph} KM/H
                     </div>
                     <div class="weather-detail">
-                        <strong>🌊 Давление:</strong><br>${current.pressure} мб
+                        <strong>PRESSURE:</strong><br>${current.pressure} MB
                     </div>
                 </div>
             </div>
         `;
     } catch (error) {
-        weatherDisplay.innerHTML = '<p>❌ Ошибка загрузки данных. Проверьте название города.</p>';
+        weatherDisplay.innerHTML = '<p>> ERROR: LOCATION NOT FOUND</p>';
     }
 }
 
@@ -489,13 +419,13 @@ cityInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') getWeather();
 });
 
-// Add slide-in animation
+// Add animations
 const style = document.createElement('style');
 style.textContent = `
-    @keyframes slideIn {
+    @keyframes slideInLeft {
         from {
             opacity: 0;
-            transform: translateX(-20px);
+            transform: translateX(-50px);
         }
         to {
             opacity: 1;
@@ -504,3 +434,20 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Typing effect for header
+const terminalLine = document.querySelector('.terminal-line');
+const originalText = terminalLine.textContent;
+let charIndex = 0;
+
+function typeWriter() {
+    if (charIndex < originalText.length) {
+        terminalLine.textContent = originalText.substring(0, charIndex + 1) + '█';
+        charIndex++;
+        setTimeout(typeWriter, 50);
+    } else {
+        terminalLine.textContent = originalText;
+    }
+}
+
+setTimeout(typeWriter, 1000);
