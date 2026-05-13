@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Minimalist Site</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Interactive Hub</h1>
+        <p>Минималистичный интерактивный сайт</p>
+    </header>
+
+    <nav class="tabs">
+        <button class="tab-btn active" data-tab="todo">Todo List</button>
+        <button class="tab-btn" data-tab="calculator">Калькулятор</button>
+        <button class="tab-btn" data-tab="timer">Таймер</button>
+        <button class="tab-btn" data-tab="notes">Заметки</button>
+        <button class="tab-btn" data-tab="draw">Рисование</button>
+        <button class="tab-btn" data-tab="weather">Погода</button>
+    </nav>
+
+    <main>
+        <!-- Todo List -->
+        <section id="todo" class="tab-content active">
+            <h2>Todo List</h2>
+            <div class="todo-container">
+                <div class="input-group">
+                    <input type="text" id="todo-input" placeholder="Добавить задачу...">
+                    <button id="add-todo">+</button>
+                </div>
+                <ul id="todo-list"></ul>
+            </div>
+        </section>
+
+        <!-- Calculator -->
+        <section id="calculator" class="tab-content">
+            <h2>Калькулятор</h2>
+            <div class="calculator">
+                <div class="calc-display" id="calc-display">0</div>
+                <div class="calc-buttons">
+                    <button class="calc-btn" data-value="7">7</button>
+                    <button class="calc-btn" data-value="8">8</button>
+                    <button class="calc-btn" data-value="9">9</button>
+                    <button class="calc-btn operator" data-value="/">÷</button>
+
+                    <button class="calc-btn" data-value="4">4</button>
+                    <button class="calc-btn" data-value="5">5</button>
+                    <button class="calc-btn" data-value="6">6</button>
+                    <button class="calc-btn operator" data-value="*">×</button>
+
+                    <button class="calc-btn" data-value="1">1</button>
+                    <button class="calc-btn" data-value="2">2</button>
+                    <button class="calc-btn" data-value="3">3</button>
+                    <button class="calc-btn operator" data-value="-">−</button>
+
+                    <button class="calc-btn" data-value="0">0</button>
+                    <button class="calc-btn" data-value=".">.</button>
+                    <button class="calc-btn operator" data-value="=">=</button>
+                    <button class="calc-btn operator" data-value="+">+</button>
+
+                    <button class="calc-btn clear" data-value="C">C</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timer -->
+        <section id="timer" class="tab-content">
+            <h2>Таймер</h2>
+            <div class="timer-container">
+                <div class="timer-display" id="timer-display">00:00</div>
+                <div class="timer-controls">
+                    <input type="number" id="timer-minutes" placeholder="Минуты" min="0" max="99">
+                    <input type="number" id="timer-seconds" placeholder="Секунды" min="0" max="59">
+                </div>
+                <div class="timer-buttons">
+                    <button id="timer-start">Старт</button>
+                    <button id="timer-pause">Пауза</button>
+                    <button id="timer-reset">Сброс</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notes -->
+        <section id="notes" class="tab-content">
+            <h2>Заметки</h2>
+            <div class="notes-container">
+                <textarea id="notes-area" placeholder="Пишите здесь..."></textarea>
+                <div class="notes-buttons">
+                    <button id="save-note">Сохранить</button>
+                    <button id="clear-note">Очистить</button>
+                </div>
+                <div id="saved-notes"></div>
+            </div>
+        </section>
+
+        <!-- Drawing Canvas -->
+        <section id="draw" class="tab-content">
+            <h2>Рисование</h2>
+            <div class="draw-container">
+                <div class="draw-controls">
+                    <input type="color" id="color-picker" value="#000000">
+                    <input type="range" id="brush-size" min="1" max="20" value="3">
+                    <button id="clear-canvas">Очистить</button>
+                    <button id="save-canvas">Сохранить</button>
+                </div>
+                <canvas id="draw-canvas" width="800" height="500"></canvas>
+            </div>
+        </section>
+
+        <!-- Weather -->
+        <section id="weather" class="tab-content">
+            <h2>Погода</h2>
+            <div class="weather-container">
+                <div class="input-group">
+                    <input type="text" id="city-input" placeholder="Введите город...">
+                    <button id="get-weather">Поиск</button>
+                </div>
+                <div id="weather-display"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Interactive Hub</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
