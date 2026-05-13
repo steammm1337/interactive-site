@@ -1,3 +1,126 @@
+// Particles System
+const particlesCanvas = document.getElementById('particles-canvas');
+const particlesCtx = particlesCanvas.getContext('2d');
+
+particlesCanvas.width = window.innerWidth;
+particlesCanvas.height = window.innerHeight;
+
+let particlesArray = [];
+let mouse = {
+    x: null,
+    y: null,
+    radius: 150
+};
+
+window.addEventListener('mousemove', (e) => {
+    mouse.x = e.x;
+    mouse.y = e.y;
+});
+
+window.addEventListener('resize', () => {
+    particlesCanvas.width = window.innerWidth;
+    particlesCanvas.height = window.innerHeight;
+    init();
+});
+
+class Particle {
+    constructor(x, y, directionX, directionY, size, color) {
+        this.x = x;
+        this.y = y;
+        this.directionX = directionX;
+        this.directionY = directionY;
+        this.size = size;
+        this.color = color;
+    }
+
+    draw() {
+        particlesCtx.beginPath();
+        particlesCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+        particlesCtx.fillStyle = this.color;
+        particlesCtx.fill();
+    }
+
+    update() {
+        if (this.x > particlesCanvas.width || this.x < 0) {
+            this.directionX = -this.directionX;
+        }
+        if (this.y > particlesCanvas.height || this.y < 0) {
+            this.directionY = -this.directionY;
+        }
+
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < mouse.radius + this.size) {
+            if (mouse.x < this.x && this.x < particlesCanvas.width - this.size * 10) {
+                this.x += 5;
+            }
+            if (mouse.x > this.x && this.x > this.size * 10) {
+                this.x -= 5;
+            }
+            if (mouse.y < this.y && this.y < particlesCanvas.height - this.size * 10) {
+                this.y += 5;
+            }
+            if (mouse.y > this.y && this.y > this.size * 10) {
+                this.y -= 5;
+            }
+        }
+
+        this.x += this.directionX;
+        this.y += this.directionY;
+        this.draw();
+    }
+}
+
+function init() {
+    particlesArray = [];
+    let numberOfParticles = (particlesCanvas.width * particlesCanvas.height) / 9000;
+
+    for (let i = 0; i < numberOfParticles; i++) {
+        let size = (Math.random() * 3) + 1;
+        let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+        let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+        let directionX = (Math.random() * 0.4) - 0.2;
+        let directionY = (Math.random() * 0.4) - 0.2;
+        let color = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2})`;
+
+        particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+    }
+}
+
+function connect() {
+    for (let a = 0; a < particlesArray.length; a++) {
+        for (let b = a; b < particlesArray.length; b++) {
+            let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
+                + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+
+            if (distance < (particlesCanvas.width / 7) * (particlesCanvas.height / 7)) {
+                let opacity = 1 - (distance / 20000);
+                particlesCtx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.3})`;
+                particlesCtx.lineWidth = 1;
+                particlesCtx.beginPath();
+                particlesCtx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                particlesCtx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                particlesCtx.stroke();
+            }
+        }
+    }
+}
+
+function animateParticles() {
+    requestAnimationFrame(animateParticles);
+    particlesCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
+
+    for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+    }
+    connect();
+}
+
+init();
+animateParticles();
+
 // Tab Navigation
 const tabBtns = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
@@ -29,8 +152,9 @@ function renderTodos() {
         li.innerHTML = `
             <input type="checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo(${index})">
             <span>${todo.text}</span>
-            <button onclick="deleteTodo(${index})">Удалить</button>
+            <button onclick="deleteTodo(${index})">🗑️ Удалить</button>
         `;
+        li.style.animation = 'slideIn 0.3s ease';
         todoList.appendChild(li);
     });
 }
@@ -153,7 +277,14 @@ function startTimer() {
                 if (timeLeft === 0) {
                     clearInterval(timerInterval);
                     isRunning = false;
-                    alert('Время вышло!');
+
+                    if ('Notification' in window && Notification.permission === 'granted') {
+                        new Notification('⏰ Таймер', {
+                            body: 'Время вышло!',
+                            icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%236366f1"/></svg>'
+                        });
+                    }
+                    alert('⏰ Время вышло!');
                 }
             }, 1000);
         }
@@ -180,6 +311,10 @@ timerReset.addEventListener('click', resetTimer);
 
 updateTimerDisplay();
 
+if ('Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission();
+}
+
 // Notes
 const notesArea = document.getElementById('notes-area');
 const saveNoteBtn = document.getElementById('save-note');
@@ -193,10 +328,11 @@ function renderNotes() {
     notes.forEach((note, index) => {
         const noteCard = document.createElement('div');
         noteCard.className = 'note-card';
+        noteCard.style.animation = 'slideIn 0.3s ease';
         noteCard.innerHTML = `
-            <div class="note-date">${note.date}</div>
+            <div class="note-date">📅 ${note.date}</div>
             <div class="note-content">${note.content}</div>
-            <button onclick="deleteNote(${index})">Удалить</button>
+            <button onclick="deleteNote(${index})">🗑️ Удалить</button>
         `;
         savedNotesDiv.appendChild(noteCard);
     });
@@ -299,7 +435,7 @@ clearCanvasBtn.addEventListener('click', () => {
 
 saveCanvasBtn.addEventListener('click', () => {
     const link = document.createElement('a');
-    link.download = 'drawing.png';
+    link.download = `drawing-${Date.now()}.png`;
     link.href = canvas.toDataURL();
     link.click();
 });
@@ -313,7 +449,7 @@ async function getWeather() {
     const city = cityInput.value.trim();
     if (!city) return;
 
-    weatherDisplay.innerHTML = '<p>Загрузка...</p>';
+    weatherDisplay.innerHTML = '<p>🔄 Загрузка...</p>';
 
     try {
         const response = await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=j1`);
@@ -324,27 +460,27 @@ async function getWeather() {
 
         weatherDisplay.innerHTML = `
             <div class="weather-info">
-                <h3>${location.areaName[0].value}, ${location.country[0].value}</h3>
+                <h3>📍 ${location.areaName[0].value}, ${location.country[0].value}</h3>
                 <div class="weather-temp">${current.temp_C}°C</div>
                 <div class="weather-desc">${current.weatherDesc[0].value}</div>
                 <div class="weather-details">
                     <div class="weather-detail">
-                        <strong>Ощущается как:</strong><br>${current.FeelsLikeC}°C
+                        <strong>🌡️ Ощущается как:</strong><br>${current.FeelsLikeC}°C
                     </div>
                     <div class="weather-detail">
-                        <strong>Влажность:</strong><br>${current.humidity}%
+                        <strong>💧 Влажность:</strong><br>${current.humidity}%
                     </div>
                     <div class="weather-detail">
-                        <strong>Ветер:</strong><br>${current.windspeedKmph} км/ч
+                        <strong>💨 Ветер:</strong><br>${current.windspeedKmph} км/ч
                     </div>
                     <div class="weather-detail">
-                        <strong>Давление:</strong><br>${current.pressure} мб
+                        <strong>🌊 Давление:</strong><br>${current.pressure} мб
                     </div>
                 </div>
             </div>
         `;
     } catch (error) {
-        weatherDisplay.innerHTML = '<p>Ошибка загрузки данных. Проверьте название города.</p>';
+        weatherDisplay.innerHTML = '<p>❌ Ошибка загрузки данных. Проверьте название города.</p>';
     }
 }
 
@@ -352,3 +488,19 @@ getWeatherBtn.addEventListener('click', getWeather);
 cityInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') getWeather();
 });
+
+// Add slide-in animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+`;
+document.head.appendChild(style);
